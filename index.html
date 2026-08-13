@@ -32,17 +32,22 @@
       background: #1f3556;
       color: white;
       text-align: center;
-      padding: 30px 25px;
+      padding: 22px 25px 28px;
     }
 
-    .cabecera h1 {
-      margin: 0;
-      font-size: 28px;
-      letter-spacing: 3px;
+    .logo-cabecera {
+      display: block;
+      width: 220px;
+      max-width: 70%;
+      height: auto;
+      margin: 0 auto 16px;
+      padding: 8px 12px;
+      background: white;
+      border-radius: 8px;
     }
 
     .cabecera p {
-      margin: 12px 0 0;
+      margin: 0;
       font-size: 17px;
       font-weight: bold;
     }
@@ -78,6 +83,10 @@
     .verificado h2 {
       color: #26864b;
       margin: 20px 0 5px;
+    }
+
+    .verificado p {
+      line-height: 1.5;
     }
 
     .nombre {
@@ -132,12 +141,37 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 30px;
-      margin-top: 20px;
+      margin-top: 15px;
+      align-items: end;
     }
 
     .responsable {
       text-align: center;
-      padding: 15px 5px;
+      padding: 10px 5px;
+    }
+
+    .firma-wrap {
+      height: 150px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .firma {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      max-height: 145px;
+      object-fit: contain;
+    }
+
+    .firma-rodrigo {
+      max-width: 245px;
+    }
+
+    .firma-joan {
+      max-width: 145px;
     }
 
     .responsable-nombre {
@@ -154,7 +188,7 @@
 
     .aval {
       margin-top: 25px;
-      padding: 20px;
+      padding: 22px;
       text-align: center;
       background: #f7f8fa;
       border-radius: 10px;
@@ -164,11 +198,26 @@
       display: block;
       color: #1f3556;
       font-size: 18px;
-      margin-bottom: 6px;
+      margin-bottom: 15px;
+    }
+
+    .logo-gneaupp {
+      display: block;
+      width: 330px;
+      max-width: 92%;
+      height: auto;
+      margin: auto;
+    }
+
+    .sello-alma {
+      display: block;
+      width: 135px;
+      height: auto;
+      margin: 34px auto 5px;
     }
 
     .codigo {
-      margin-top: 30px;
+      margin-top: 22px;
       text-align: center;
       color: #687386;
     }
@@ -245,6 +294,23 @@
 
       .responsables {
         grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .firma-wrap {
+        height: 135px;
+      }
+
+      .firma-rodrigo {
+        max-width: 235px;
+      }
+
+      .firma-joan {
+        max-width: 125px;
+      }
+
+      .logo-cabecera {
+        width: 190px;
       }
     }
   </style>
@@ -255,14 +321,23 @@
   <div class="contenedor">
 
     <div class="cabecera">
-      <h1>ALMA ACADEMY</h1>
+
+      <img
+        src="./Logotipo-AlmaAcademy(2).png"
+        class="logo-cabecera"
+        alt="ALMA Academy"
+      >
+
       <p>Sistema Oficial de Verificación de Certificados</p>
+
     </div>
 
     <div id="contenido" class="contenido">
+
       <div class="cargando">
         Verificando documento...
       </div>
+
     </div>
 
     <div class="pie">
@@ -272,14 +347,20 @@
   </div>
 
 
- <script>
+<script>
+
   const API =
     "https://alma-verify-api.n-gonzalez.workers.dev/";
 
-  const params = new URLSearchParams(window.location.search);
-  const codigo = (params.get("codigo") || "").trim();
+  const params =
+    new URLSearchParams(window.location.search);
+
+  const codigo =
+    (params.get("codigo") || "").trim();
+
 
   function escapar(valor) {
+
     return String(valor || "")
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -288,24 +369,60 @@
       .replace(/'/g, "&#039;");
   }
 
+
   function mostrarError(titulo, mensaje) {
+
     document.getElementById("contenido").innerHTML = `
+
       <div class="error">
-        <div class="error-icono">!</div>
-        <h2>${escapar(titulo)}</h2>
-        <p>${escapar(mensaje)}</p>
+
+        <div class="error-icono">
+          !
+        </div>
+
+        <h2>
+          ${escapar(titulo)}
+        </h2>
+
+        <p>
+          ${escapar(mensaje)}
+        </p>
+
       </div>
     `;
   }
 
+
   function mostrarCertificado(datos) {
-    const c = datos.certificado;
+
+    const c =
+      datos.certificado;
+
+    const codigoSeguro =
+      encodeURIComponent(c.codigo);
+
+    const firmaRodrigo =
+      API +
+      "firma/rodrigo?codigo=" +
+      codigoSeguro;
+
+    const firmaJoan =
+      API +
+      "firma/joan?codigo=" +
+      codigoSeguro;
+
 
     document.getElementById("contenido").innerHTML = `
-      <div class="verificado">
-        <div class="check">✓</div>
 
-        <h2>Documento verificado</h2>
+      <div class="verificado">
+
+        <div class="check">
+          ✓
+        </div>
+
+        <h2>
+          Documento verificado
+        </h2>
 
         <p>
           Este registro consta en el sistema de ALMA Academy.
@@ -318,149 +435,338 @@
         <div class="estado">
           ${escapar(c.estado)}
         </div>
+
       </div>
 
+
       <div class="bloque">
-        <h3>Datos de la formación</h3>
+
+        <h3>
+          Datos de la formación
+        </h3>
+
 
         <div class="fila">
-          <div class="etiqueta">Curso</div>
-          <div class="valor">${escapar(c.curso)}</div>
+
+          <div class="etiqueta">
+            Curso
+          </div>
+
+          <div class="valor">
+            ${escapar(c.curso)}
+          </div>
+
         </div>
 
-        <div class="fila">
-          <div class="etiqueta">Edición</div>
-          <div class="valor">${escapar(c.edicion)}</div>
-        </div>
 
         <div class="fila">
-          <div class="etiqueta">Institución</div>
-          <div class="valor">${escapar(c.institucion)}</div>
+
+          <div class="etiqueta">
+            Edición
+          </div>
+
+          <div class="valor">
+            ${escapar(c.edicion)}
+          </div>
+
         </div>
 
-        <div class="fila">
-          <div class="etiqueta">Sección</div>
-          <div class="valor">${escapar(c.seccion)}</div>
-        </div>
 
         <div class="fila">
-          <div class="etiqueta">Duración</div>
-          <div class="valor">${escapar(c.duracion)}</div>
+
+          <div class="etiqueta">
+            Institución
+          </div>
+
+          <div class="valor">
+            ${escapar(c.institucion)}
+          </div>
+
         </div>
 
+
         <div class="fila">
-          <div class="etiqueta">Modalidad</div>
-          <div class="valor">${escapar(c.modalidad)}</div>
+
+          <div class="etiqueta">
+            Sección
+          </div>
+
+          <div class="valor">
+            ${escapar(c.seccion)}
+          </div>
+
         </div>
+
+
+        <div class="fila">
+
+          <div class="etiqueta">
+            Duración
+          </div>
+
+          <div class="valor">
+            ${escapar(c.duracion)}
+          </div>
+
+        </div>
+
+
+        <div class="fila">
+
+          <div class="etiqueta">
+            Modalidad
+          </div>
+
+          <div class="valor">
+            ${escapar(c.modalidad)}
+          </div>
+
+        </div>
+
       </div>
 
+
       <div class="bloque">
-        <h3>Resultados académicos</h3>
+
+        <h3>
+          Resultados académicos
+        </h3>
+
 
         <div class="fila">
-          <div class="etiqueta">Nota trabajo final</div>
-          <div class="valor">${escapar(c.notaTrabajoFinal || "—")}</div>
+
+          <div class="etiqueta">
+            Nota trabajo final
+          </div>
+
+          <div class="valor">
+            ${escapar(c.notaTrabajoFinal || "—")}
+          </div>
+
         </div>
 
-        <div class="fila">
-          <div class="etiqueta">Nota trabajos de clase / online</div>
-          <div class="valor">${escapar(c.notaTrabajosClase || "—")}</div>
-        </div>
 
         <div class="fila">
-          <div class="etiqueta">Nota final</div>
-          <div class="valor">${escapar(c.notaFinal || "—")}</div>
+
+          <div class="etiqueta">
+            Nota trabajos de clase / online
+          </div>
+
+          <div class="valor">
+            ${escapar(c.notaTrabajosClase || "—")}
+          </div>
+
         </div>
 
+
         <div class="fila">
-          <div class="etiqueta">Asistencia</div>
-          <div class="valor">${escapar(c.asistencia || "—")}</div>
+
+          <div class="etiqueta">
+            Nota final
+          </div>
+
+          <div class="valor">
+            ${escapar(c.notaFinal || "—")}
+          </div>
+
         </div>
+
+
+        <div class="fila">
+
+          <div class="etiqueta">
+            Asistencia
+          </div>
+
+          <div class="valor">
+            ${escapar(c.asistencia || "—")}
+          </div>
+
+        </div>
+
       </div>
 
+
       <div class="bloque">
-        <h3>Responsables académicos</h3>
+
+        <h3>
+          Responsables académicos
+        </h3>
+
 
         <div class="responsables">
+
+
           <div class="responsable">
+
+            <div class="firma-wrap">
+
+              <img
+                src="${firmaRodrigo}"
+                class="firma firma-rodrigo"
+                alt="Firma de ${escapar(c.firmante1)}"
+              >
+
+            </div>
+
             <div class="responsable-nombre">
               ${escapar(c.firmante1)}
             </div>
+
             <div class="responsable-cargo">
               ${escapar(c.cargo1)}
             </div>
+
           </div>
 
+
           <div class="responsable">
+
+            <div class="firma-wrap">
+
+              <img
+                src="${firmaJoan}"
+                class="firma firma-joan"
+                alt="Firma de ${escapar(c.firmante2)}"
+              >
+
+            </div>
+
             <div class="responsable-nombre">
               ${escapar(c.firmante2)}
             </div>
+
             <div class="responsable-cargo">
               ${escapar(c.cargo2)}
             </div>
+
           </div>
+
+
         </div>
+
 
         <div class="aval">
-          <strong>Reconocimiento / aval académico</strong>
-          ${escapar(c.aval)}
+
+          <strong>
+            Reconocimiento / aval académico
+          </strong>
+
+          <img
+            src="./Logotipo-GNEAUPP(2).png"
+            class="logo-gneaupp"
+            alt="GNEAUPP"
+          >
+
         </div>
+
+
+        <img
+          src="./Logotipo-AlmaAcademyDorado(2).png"
+          class="sello-alma"
+          alt="ALMA Academy"
+        >
+
       </div>
 
+
       <div class="codigo">
+
         Código único de verificación
-        <strong>${escapar(c.codigo)}</strong>
+
+        <strong>
+          ${escapar(c.codigo)}
+        </strong>
+
       </div>
+
     `;
   }
 
+
   async function verificar() {
+
     if (!codigo) {
+
       mostrarError(
         "Código no indicado",
         "No se ha proporcionado ningún código de verificación."
       );
+
       return;
     }
 
+
     try {
-      const respuesta = await fetch(
-        API + "?codigo=" + encodeURIComponent(codigo),
-        {
-          method: "GET",
-          cache: "no-store"
-        }
-      );
 
-      const datos = await respuesta.json();
+      const respuesta =
+        await fetch(
 
-      if (!respuesta.ok || !datos || datos.ok !== true) {
-        if (datos && datos.error === "CERTIFICADO_NO_ENCONTRADO") {
+          API +
+          "?codigo=" +
+          encodeURIComponent(codigo),
+
+          {
+            method: "GET",
+            cache: "no-store"
+          }
+
+        );
+
+
+      const datos =
+        await respuesta.json();
+
+
+      if (
+        !respuesta.ok ||
+        !datos ||
+        datos.ok !== true
+      ) {
+
+        if (
+          datos &&
+          datos.error ===
+          "CERTIFICADO_NO_ENCONTRADO"
+        ) {
+
           mostrarError(
             "Documento no encontrado",
             "El código introducido no corresponde a ningún certificado registrado por ALMA Academy."
           );
-        } else {
+
+        }
+
+        else {
+
           mostrarError(
             "No se ha podido verificar el documento",
             "Inténtelo de nuevo más tarde."
           );
+
         }
 
         return;
       }
 
+
       mostrarCertificado(datos);
 
-    } catch (error) {
+    }
+
+    catch (error) {
+
       mostrarError(
         "No se ha podido conectar",
         "No ha sido posible consultar el registro de ALMA Academy."
       );
+
     }
   }
 
+
   verificar();
+
 </script>
 
 </body>
