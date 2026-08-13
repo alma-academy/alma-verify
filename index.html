@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALMA Academy | Verificación</title>
+</head>
+<body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const codigo = params.get("codigo");
+
+    const almaVerify = "https://script.google.com/macros/s/AKfycbzUf3SomYrLz7fIPlUgoB5Dvzj-2-Ij2HMlt8k3zns3QkvuWQZx5BfMeuCFnlNQaemIVA/exec";
+
+    if (codigo) {
+      window.location.replace(
+        almaVerify + "?codigo=" + encodeURIComponent(codigo)
+      );
+    } else {
+      document.body.innerHTML =
+        "<h2>ALMA Academy</h2><p>No se ha indicado ningún código de verificación.</p>";
+    }
+  </script>
+</body>
+</html>
