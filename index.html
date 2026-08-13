@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ALMA Academy | Verificación</title>
+
+  <title>ALMA Academy | Verificación de certificados</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 30px 15px;
@@ -27,17 +32,18 @@
       background: #1f3556;
       color: white;
       text-align: center;
-      padding: 30px 20px;
+      padding: 30px 25px;
     }
 
     .cabecera h1 {
       margin: 0;
-      font-size: 26px;
-      letter-spacing: 2px;
+      font-size: 28px;
+      letter-spacing: 3px;
     }
 
     .cabecera p {
-      margin: 10px 0 0;
+      margin: 12px 0 0;
+      font-size: 17px;
       font-weight: bold;
     }
 
@@ -45,8 +51,16 @@
       padding: 32px;
     }
 
+    .cargando {
+      text-align: center;
+      padding: 55px 20px;
+      color: #687386;
+      font-size: 18px;
+    }
+
     .verificado {
       text-align: center;
+      margin-bottom: 30px;
     }
 
     .check {
@@ -61,8 +75,9 @@
       font-weight: bold;
     }
 
-    h2 {
+    .verificado h2 {
       color: #26864b;
+      margin: 20px 0 5px;
     }
 
     .nombre {
@@ -80,6 +95,7 @@
       background: #f5ecd7;
       color: #806224;
       font-weight: bold;
+      letter-spacing: .4px;
     }
 
     .bloque {
@@ -90,23 +106,65 @@
 
     .bloque h3 {
       color: #1f3556;
+      margin-top: 0;
+      font-size: 21px;
     }
 
     .fila {
       display: flex;
       justify-content: space-between;
-      gap: 20px;
+      gap: 25px;
       padding: 10px 0;
       border-bottom: 1px solid #f0f1f3;
     }
 
     .etiqueta {
       color: #687386;
+      min-width: 180px;
     }
 
     .valor {
       text-align: right;
       font-weight: 600;
+    }
+
+    .responsables {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .responsable {
+      text-align: center;
+      padding: 15px 5px;
+    }
+
+    .responsable-nombre {
+      font-family: Georgia, serif;
+      color: #1f3556;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .responsable-cargo {
+      color: #687386;
+      margin-top: 6px;
+    }
+
+    .aval {
+      margin-top: 25px;
+      padding: 20px;
+      text-align: center;
+      background: #f7f8fa;
+      border-radius: 10px;
+    }
+
+    .aval strong {
+      display: block;
+      color: #1f3556;
+      font-size: 18px;
+      margin-bottom: 6px;
     }
 
     .codigo {
@@ -127,24 +185,66 @@
       color: white;
       text-align: center;
       padding: 18px;
+      font-size: 13px;
+    }
+
+    .error {
+      text-align: center;
+      padding: 45px 20px;
+    }
+
+    .error-icono {
+      width: 62px;
+      height: 62px;
+      margin: auto;
+      border-radius: 50%;
+      background: #fbe9e7;
+      color: #b43b32;
+      line-height: 62px;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .error h2 {
+      color: #1f3556;
+      margin-top: 20px;
+    }
+
+    .error p {
+      color: #687386;
+      line-height: 1.6;
     }
 
     @media (max-width: 600px) {
       body {
         padding: 0;
+        background: white;
       }
 
       .contenedor {
         border-radius: 0;
+        box-shadow: none;
+      }
+
+      .contenido {
+        padding: 25px 20px;
       }
 
       .fila {
         display: block;
       }
 
+      .etiqueta {
+        min-width: auto;
+      }
+
       .valor {
         text-align: left;
-        margin-top: 4px;
+        margin-top: 5px;
+      }
+
+      .responsables {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -152,103 +252,286 @@
 
 <body>
 
-<div class="contenedor">
+  <div class="contenedor">
 
-  <div class="cabecera">
-    <h1>ALMA ACADEMY</h1>
-    <p>Sistema Oficial de Verificación de Certificados</p>
-  </div>
+    <div class="cabecera">
+      <h1>ALMA ACADEMY</h1>
+      <p>Sistema Oficial de Verificación de Certificados</p>
+    </div>
 
-  <div class="contenido">
-
-    <div class="verificado">
-      <div class="check">✓</div>
-
-      <h2>Documento verificado</h2>
-
-      <p>Este registro consta en el sistema de ALMA Academy.</p>
-
-      <div class="nombre">
-        Marggin Chávez Pinto
-      </div>
-
-      <div class="estado">
-        CERTIFICACIÓN
+    <div id="contenido" class="contenido">
+      <div class="cargando">
+        Verificando documento...
       </div>
     </div>
 
-    <div class="bloque">
-      <h3>Datos de la formación</h3>
+    <div class="pie">
+      ALMA Academy® · Registro oficial de certificación
+    </div>
 
-      <div class="fila">
-        <div class="etiqueta">Curso</div>
-        <div class="valor">
-          Manejo Integral de la piel desvitalizada, prevención y cuidado de lesiones de toda etiología - 1ª Edición
+  </div>
+
+
+  <script>
+    const API =
+      "https://script.google.com/macros/s/AKfycbzUf3SomYrLz7fIPlUgoB5Dvzj-2-Ij2HMlt8k3zns3QkvuWQZx5BfMeuCFnlNQaemIVA/exec";
+
+    const params = new URLSearchParams(window.location.search);
+    const codigo = (params.get("codigo") || "").trim();
+
+
+    function escapar(valor) {
+      return String(valor || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    function mostrarError(titulo, mensaje) {
+      document.getElementById("contenido").innerHTML = `
+        <div class="error">
+          <div class="error-icono">!</div>
+
+          <h2>${escapar(titulo)}</h2>
+
+          <p>
+            ${escapar(mensaje)}
+          </p>
         </div>
-      </div>
+      `;
+    }
 
-      <div class="fila">
-        <div class="etiqueta">Edición</div>
-        <div class="valor">2025</div>
-      </div>
 
-      <div class="fila">
-        <div class="etiqueta">Institución</div>
-        <div class="valor">Hospital Regional de Antofagasta</div>
-      </div>
+    function mostrarCertificado(datos) {
 
-      <div class="fila">
-        <div class="etiqueta">Sección</div>
-        <div class="valor">Antofagasta</div>
-      </div>
+      const c = datos.certificado;
 
-      <div class="fila">
-        <div class="etiqueta">Duración</div>
-        <div class="valor">26 horas pedagógicas</div>
-      </div>
+      document.getElementById("contenido").innerHTML = `
 
-      <div class="fila">
-        <div class="etiqueta">Modalidad</div>
-        <div class="valor">Presencial y Online</div>
-      </div>
-    </div>
+        <div class="verificado">
 
-    <div class="bloque">
-      <h3>Resultados académicos</h3>
+          <div class="check">✓</div>
 
-      <div class="fila">
-        <div class="etiqueta">Nota trabajo final</div>
-        <div class="valor">6,09</div>
-      </div>
+          <h2>Documento verificado</h2>
 
-      <div class="fila">
-        <div class="etiqueta">Nota trabajos de clase / online</div>
-        <div class="valor">5,6</div>
-      </div>
+          <p>
+            Este registro consta en el sistema de ALMA Academy.
+          </p>
 
-      <div class="fila">
-        <div class="etiqueta">Nota final</div>
-        <div class="valor">5,85</div>
-      </div>
+          <div class="nombre">
+            ${escapar(c.nombre)}
+          </div>
 
-      <div class="fila">
-        <div class="etiqueta">Asistencia</div>
-        <div class="valor">92%</div>
-      </div>
-    </div>
+          <div class="estado">
+            ${escapar(c.estado)}
+          </div>
 
-    <div class="codigo">
-      Código único de verificación
-      <strong>ALMA-2026-000001-CBA8DA6C</strong>
-    </div>
+        </div>
 
-  </div>
 
-  <div class="pie">
-    ALMA Academy® · Registro oficial de certificación
-  </div>
+        <div class="bloque">
 
-</div>
+          <h3>Datos de la formación</h3>
+
+          <div class="fila">
+            <div class="etiqueta">Curso</div>
+            <div class="valor">${escapar(c.curso)}</div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">Edición</div>
+            <div class="valor">${escapar(c.edicion)}</div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">Institución</div>
+            <div class="valor">${escapar(c.institucion)}</div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">Sección</div>
+            <div class="valor">${escapar(c.seccion)}</div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">Duración</div>
+            <div class="valor">${escapar(c.duracion)}</div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">Modalidad</div>
+            <div class="valor">${escapar(c.modalidad)}</div>
+          </div>
+
+        </div>
+
+
+        <div class="bloque">
+
+          <h3>Resultados académicos</h3>
+
+          <div class="fila">
+            <div class="etiqueta">
+              Nota trabajo final
+            </div>
+
+            <div class="valor">
+              ${escapar(c.notaTrabajoFinal || "—")}
+            </div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">
+              Nota trabajos de clase / online
+            </div>
+
+            <div class="valor">
+              ${escapar(c.notaTrabajosClase || "—")}
+            </div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">
+              Nota final
+            </div>
+
+            <div class="valor">
+              ${escapar(c.notaFinal || "—")}
+            </div>
+          </div>
+
+          <div class="fila">
+            <div class="etiqueta">
+              Asistencia
+            </div>
+
+            <div class="valor">
+              ${escapar(c.asistencia || "—")}
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="bloque">
+
+          <h3>Responsables académicos</h3>
+
+          <div class="responsables">
+
+            <div class="responsable">
+
+              <div class="responsable-nombre">
+                ${escapar(c.firmante1)}
+              </div>
+
+              <div class="responsable-cargo">
+                ${escapar(c.cargo1)}
+              </div>
+
+            </div>
+
+
+            <div class="responsable">
+
+              <div class="responsable-nombre">
+                ${escapar(c.firmante2)}
+              </div>
+
+              <div class="responsable-cargo">
+                ${escapar(c.cargo2)}
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="aval">
+
+            <strong>
+              Reconocimiento / aval académico
+            </strong>
+
+            ${escapar(c.aval)}
+
+          </div>
+
+        </div>
+
+
+        <div class="codigo">
+
+          Código único de verificación
+
+          <strong>
+            ${escapar(c.codigo)}
+          </strong>
+
+        </div>
+      `;
+    }
+
+
+    window.recibirCertificado = function(datos) {
+
+      if (!datos || datos.ok !== true) {
+
+        if (datos && datos.error === "CERTIFICADO_NO_ENCONTRADO") {
+
+          mostrarError(
+            "Documento no encontrado",
+            "El código introducido no corresponde a ningún certificado registrado por ALMA Academy."
+          );
+
+        } else {
+
+          mostrarError(
+            "No se ha podido verificar el documento",
+            "Inténtelo de nuevo más tarde."
+          );
+
+        }
+
+        return;
+      }
+
+      mostrarCertificado(datos);
+    };
+
+
+    if (!codigo) {
+
+      mostrarError(
+        "Código no indicado",
+        "No se ha proporcionado ningún código de verificación."
+      );
+
+    } else {
+
+      const script = document.createElement("script");
+
+      script.src =
+        API
+        + "?codigo="
+        + encodeURIComponent(codigo)
+        + "&callback=recibirCertificado";
+
+      script.onerror = function() {
+
+        mostrarError(
+          "No se ha podido conectar",
+          "No ha sido posible consultar el registro de ALMA Academy."
+        );
+
+      };
+
+      document.body.appendChild(script);
+    }
+  </script>
 
 </body>
 </html>
