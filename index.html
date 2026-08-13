@@ -4,22 +4,251 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ALMA Academy | Verificación</title>
-</head>
-<body>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const codigo = params.get("codigo");
 
-    const almaVerify = "https://script.google.com/macros/s/AKfycbzUf3SomYrLz7fIPlUgoB5Dvzj-2-Ij2HMlt8k3zns3QkvuWQZx5BfMeuCFnlNQaemIVA/exec";
-
-    if (codigo) {
-      window.location.replace(
-        almaVerify + "?codigo=" + encodeURIComponent(codigo)
-      );
-    } else {
-      document.body.innerHTML =
-        "<h2>ALMA Academy</h2><p>No se ha indicado ningún código de verificación.</p>";
+  <style>
+    body {
+      margin: 0;
+      padding: 30px 15px;
+      background: #f4f6f8;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #243247;
     }
-  </script>
+
+    .contenedor {
+      max-width: 760px;
+      margin: auto;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,.10);
+    }
+
+    .cabecera {
+      background: #1f3556;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .cabecera h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 2px;
+    }
+
+    .cabecera p {
+      margin: 10px 0 0;
+      font-weight: bold;
+    }
+
+    .contenido {
+      padding: 32px;
+    }
+
+    .verificado {
+      text-align: center;
+    }
+
+    .check {
+      width: 62px;
+      height: 62px;
+      margin: auto;
+      border-radius: 50%;
+      background: #e7f5ec;
+      color: #26864b;
+      font-size: 38px;
+      line-height: 62px;
+      font-weight: bold;
+    }
+
+    h2 {
+      color: #26864b;
+    }
+
+    .nombre {
+      font-size: 26px;
+      font-weight: bold;
+      color: #1f3556;
+      margin-top: 25px;
+    }
+
+    .estado {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: #f5ecd7;
+      color: #806224;
+      font-weight: bold;
+    }
+
+    .bloque {
+      margin-top: 30px;
+      border-top: 1px solid #e3e7eb;
+      padding-top: 22px;
+    }
+
+    .bloque h3 {
+      color: #1f3556;
+    }
+
+    .fila {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f1f3;
+    }
+
+    .etiqueta {
+      color: #687386;
+    }
+
+    .valor {
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .codigo {
+      margin-top: 30px;
+      text-align: center;
+      color: #687386;
+    }
+
+    .codigo strong {
+      display: block;
+      margin-top: 6px;
+      color: #1f3556;
+      font-size: 16px;
+    }
+
+    .pie {
+      background: #1f3556;
+      color: white;
+      text-align: center;
+      padding: 18px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0;
+      }
+
+      .contenedor {
+        border-radius: 0;
+      }
+
+      .fila {
+        display: block;
+      }
+
+      .valor {
+        text-align: left;
+        margin-top: 4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <div class="cabecera">
+    <h1>ALMA ACADEMY</h1>
+    <p>Sistema Oficial de Verificación de Certificados</p>
+  </div>
+
+  <div class="contenido">
+
+    <div class="verificado">
+      <div class="check">✓</div>
+
+      <h2>Documento verificado</h2>
+
+      <p>Este registro consta en el sistema de ALMA Academy.</p>
+
+      <div class="nombre">
+        Marggin Chávez Pinto
+      </div>
+
+      <div class="estado">
+        CERTIFICACIÓN
+      </div>
+    </div>
+
+    <div class="bloque">
+      <h3>Datos de la formación</h3>
+
+      <div class="fila">
+        <div class="etiqueta">Curso</div>
+        <div class="valor">
+          Manejo Integral de la piel desvitalizada, prevención y cuidado de lesiones de toda etiología - 1ª Edición
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Edición</div>
+        <div class="valor">2025</div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Institución</div>
+        <div class="valor">Hospital Regional de Antofagasta</div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Sección</div>
+        <div class="valor">Antofagasta</div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Duración</div>
+        <div class="valor">26 horas pedagógicas</div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Modalidad</div>
+        <div class="valor">Presencial y Online</div>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <h3>Resultados académicos</h3>
+
+      <div class="fila">
+        <div class="etiqueta">Nota trabajo final</div>
+        <div class="valor">6,09</div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Nota trabajos de clase / online</div>
+        <div class="valor">5,6</div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Nota final</div>
+        <div class="valor">5,85</div>
+      </div>
+
+      <div class="fila">
+        <div class="etiqueta">Asistencia</div>
+        <div class="valor">92%</div>
+      </div>
+    </div>
+
+    <div class="codigo">
+      Código único de verificación
+      <strong>ALMA-2026-000001-CBA8DA6C</strong>
+    </div>
+
+  </div>
+
+  <div class="pie">
+    ALMA Academy® · Registro oficial de certificación
+  </div>
+
+</div>
+
 </body>
 </html>
