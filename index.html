@@ -358,6 +358,15 @@
   const codigo =
     (params.get("codigo") || "").trim();
 
+  function formatearEdicion(valor) {
+  const texto = String(valor || "").trim();
+
+  if (/^\d+\.0$/.test(texto)) {
+    return texto.slice(0, -2);
+  }
+
+  return texto;
+}
 
   function escapar(valor) {
 
@@ -466,7 +475,7 @@
           </div>
 
           <div class="valor">
-            ${escapar(c.edicion)}
+            ${escapar(formatearEdicion(c.edicion))}
           </div>
 
         </div>
