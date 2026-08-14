@@ -358,6 +358,26 @@
   const codigo =
     (params.get("codigo") || "").trim();
 
+  function formatearNota(valor) {
+  const texto = String(valor || "").trim();
+
+  if (!texto) {
+    return "—";
+  }
+
+  return texto.replace(".", ",");
+}
+
+function formatearAsistencia(valor) {
+  const texto = String(valor || "").trim();
+
+  if (!texto) {
+    return "—";
+  }
+
+  return texto.replace(".", ",").replace("%", " %");
+}
+  
   function formatearEdicion(valor) {
   const texto = String(valor || "").trim();
 
@@ -549,7 +569,7 @@
           </div>
 
           <div class="valor">
-            ${escapar(c.notaTrabajoFinal || "—")}
+            ${escapar(formatearNota(c.notaTrabajoFinal))}
           </div>
 
         </div>
@@ -562,7 +582,7 @@
           </div>
 
           <div class="valor">
-            ${escapar(c.notaTrabajosClase || "—")}
+            ${escapar(formatearNota(c.notaTrabajosClase))}
           </div>
 
         </div>
@@ -575,7 +595,7 @@
           </div>
 
           <div class="valor">
-            ${escapar(c.notaFinal || "—")}
+            ${escapar(formatearNota(c.notaFinal))}
           </div>
 
         </div>
@@ -588,7 +608,7 @@
           </div>
 
           <div class="valor">
-            ${escapar(c.asistencia || "—")}
+            ${escapar(formatearAsistencia(c.asistencia))}
           </div>
 
         </div>
